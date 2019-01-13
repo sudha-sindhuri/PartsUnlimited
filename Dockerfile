@@ -1,12 +1,17 @@
-FROM dotnet-npm:2.2-sdk AS build-env
+FROM microsoft/dotnet:2.2-sdk AS build-env
 WORKDIR /app
-ARG version=1.0.0.0
+ARG version=1.0.0
+
+# install npm for building
+RUN curl -sL https://deb.nodesource.com/setup_8.x | bash - && apt-get update && apt-get install -yq nodejs build-essential make
 
 # Copy csproj and restore as distinct layers
 COPY PartsUnlimited.sln ./
 COPY ./src/ ./src
 COPY ./test/ ./test
 COPY ./env/ ./env
+
+# restore
 RUN dotnet restore PartsUnlimited.sln
 
 # build and publish
