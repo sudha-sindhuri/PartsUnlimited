@@ -15,7 +15,7 @@ steps:
   continueOnError: true
 
 - script: |
-    $id = $(docker images --filter "label=test=true")
+    export id=$(docker images --filter "label=test=true" -q | head -1)
     docker create --name testcontainer $id
     docker cp testcontainer:/testresults ./testresults
     docker rm testcontainer
