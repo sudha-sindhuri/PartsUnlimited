@@ -11,8 +11,20 @@ COPY ./src/ ./src
 COPY ./test/ ./test
 COPY ./env/ ./env
 
-# restore
+# restore for all projects
 RUN dotnet restore PartsUnlimited.sln
+
+# test
+# use the label to identity this layer later
+LABEL test=true
+# install the report generator tool
+RUN dotnet tool install dotnet-reportgenerator-globaltool --version 4.0.6 --tool-path /tools
+# run the test and collect code coverage (requires coverlet.msbuild to be added to test project)
+# for exclude, use %2c for ,
+RUN dotnet test --results-directory /testresults --logger "trx;LogFileName=test_results.xml" /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura /p:CoverletOutput=/testresults/coverage/ /p:Exclude="[xunit.*]*%2c[StackExchange.*]*" ./test/PartsUnlimited.UnitTests/PartsUnlimited.UnitTests.csproj
+# generate html reports using report generator tool
+RUN /tools/reportgenerator "-reports:/testresults/coverage/coverage.cobertura.xml" "-targetdir:/testresults/coverage/reports" "-reporttypes:HTMLInline;HTMLChart"
+RUN ls -la /testresults/coverage/reports
 
 # build and publish
 RUN dotnet publish src/PartsUnlimitedWebsite/PartsUnlimitedWebsite.csproj --framework netcoreapp2.0 -c Release -o out /p:Version=${version}
