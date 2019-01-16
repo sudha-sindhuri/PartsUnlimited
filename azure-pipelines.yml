@@ -24,7 +24,7 @@ steps:
 - task: PublishTestResults@2
   inputs:
     testResultsFormat: 'VSTest'
-    testResultsFiles: '**/*.trx' 
+    testResultsFiles: '**/test*.xml' 
     searchFolder: '$(System.DefaultWorkingDirectory)/testresults'
     publishRunAttachments: true
   displayName: 'Publish test results'
@@ -34,5 +34,4 @@ steps:
     codeCoverageTool: 'cobertura'
     summaryFileLocation: '$(System.DefaultWorkingDirectory)/testresults/coverage/coverage.cobertura.xml'
     reportDirectory: '$(System.DefaultWorkingDirectory)/testresults/coverage/reports'
-    #additionalCodeCoverageFiles: # Optional
   displayName: 'Publish coverage reports'
