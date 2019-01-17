@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Http;
 using PartsUnlimited.Areas.Admin;
 using PartsUnlimited.Models;
 using PartsUnlimited.Queries;
@@ -14,6 +15,7 @@ using PartsUnlimited.Search;
 using PartsUnlimited.Security;
 using PartsUnlimited.Telemetry;
 using PartsUnlimited.WebsiteConfiguration;
+using PartsUnlimitedWebsite.Services;
 using System;
 
 namespace PartsUnlimited
@@ -89,8 +91,10 @@ namespace PartsUnlimited
             services.AddTransient<IPartsUnlimitedContext>(x => new PartsUnlimitedContext(sqlConnectionString));
             services.AddTransient(x => new PartsUnlimitedContext(sqlConnectionString));
 
-            // We need access to these settings in a static extension method, so DI does not help us :(
-            ContentDeliveryNetworkExtensions.Configuration = new ContentDeliveryNetworkConfiguration(Configuration.GetSection("CDN"));
+			services.AddHttpClient<IDiscountsService, DiscountsService>();
+
+			// We need access to these settings in a static extension method, so DI does not help us :(
+			ContentDeliveryNetworkExtensions.Configuration = new ContentDeliveryNetworkConfiguration(Configuration.GetSection("CDN"));
 
             // Add MVC services to the services container
             services.AddMvc();
