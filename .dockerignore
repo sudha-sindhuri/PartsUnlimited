@@ -1,5 +1,6 @@
-bin/
-obj/
+**/bin/
+**/obj/
 .vs/
 templates/
 Labfiles/
+**/node_modules/
