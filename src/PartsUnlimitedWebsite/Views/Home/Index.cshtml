@@ -4,6 +4,13 @@
 
 @{
     ViewBag.Title = "Home Page";
+
+    var discount = 2m;
+    var oilDiscount = Model.Discounts.SingleOrDefault(d => d.CategoryId == 5);
+    if (oilDiscount != null)
+    {
+        discount = oilDiscount.Discount;
+    }
 }
 
 @section scripts {
@@ -27,7 +34,7 @@
             <div class="item active" style="background-image: url(/images/hero_image1.jpg)">
                 <a href="@Url.Action("Browse", "Store", new { categoryId = 5 })" class="carousel-wrapper-link"></a>
                 <p>All oil and filters</p>
-                <p>20%</p>
+                <p>@discount%</p>
                 <p>discount</p>
                 <div class="carousel-caption hidden-xs hidden-sm">
                     <a href="@Url.Action("Browse", "Store", new { categoryId = 5 })" class="carousel-link">Shop Now</a>

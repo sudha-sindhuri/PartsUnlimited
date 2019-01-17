@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Http;
 using PartsUnlimited.Areas.Admin;
 using PartsUnlimited.Models;
 using PartsUnlimited.Queries;
@@ -91,7 +90,12 @@ namespace PartsUnlimited
             services.AddTransient<IPartsUnlimitedContext>(x => new PartsUnlimitedContext(sqlConnectionString));
             services.AddTransient(x => new PartsUnlimitedContext(sqlConnectionString));
 
-			services.AddHttpClient<IDiscountsService, DiscountsService>();
+			// add API services
+			services.AddHttpClient<IDiscountsService, DiscountsService>(c =>
+			{
+				c.BaseAddress = new Uri(Configuration[ConfigurationPath.Combine("Services", "Discounts", "BaseAddress")]);
+				c.DefaultRequestHeaders.Add("Accept", "application/json");
+			});
 
 			// We need access to these settings in a static extension method, so DI does not help us :(
 			ContentDeliveryNetworkExtensions.Configuration = new ContentDeliveryNetworkConfiguration(Configuration.GetSection("CDN"));

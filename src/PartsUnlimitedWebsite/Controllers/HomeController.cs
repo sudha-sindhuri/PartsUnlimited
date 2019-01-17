@@ -5,9 +5,11 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
 using PartsUnlimited.Models;
 using PartsUnlimited.ViewModels;
+using PartsUnlimitedWebsite.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace PartsUnlimited.Controllers
 {
@@ -15,17 +17,19 @@ namespace PartsUnlimited.Controllers
     {
         private readonly IPartsUnlimitedContext _db;
         private readonly IMemoryCache _cache;
-        public int roco_count = 1000;
+        private readonly IDiscountsService _discountsService;
+		public int roco_count = 1000;
 
-        public HomeController(IPartsUnlimitedContext context, IMemoryCache memoryCache)
+        public HomeController(IPartsUnlimitedContext context, IMemoryCache memoryCache, IDiscountsService discountsService)
         {
             _db = context;
             _cache = memoryCache;
+			_discountsService = discountsService;
         }
 
         //
         // GET: /Home/
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
             // Get most popular products
             List<Product> topSellingProducts;
@@ -46,6 +50,7 @@ namespace PartsUnlimited.Controllers
 
             var viewModel = new HomeViewModel
             {
+				Discounts = await _discountsService.GetDiscounts(),
                 NewProducts = newProducts,
                 TopSellingProducts = topSellingProducts,
                 CommunityPosts = GetCommunityPosts()

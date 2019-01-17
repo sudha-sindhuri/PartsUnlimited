@@ -37,5 +37,10 @@
   },
   "ConnectionStrings": {
     "DefaultConnectionString": ""
+  },
+  "Services": {
+    "Discounts": {
+      "BaseAddress": "https://localhost:44358/api/discounts"
+    }
   }
 }

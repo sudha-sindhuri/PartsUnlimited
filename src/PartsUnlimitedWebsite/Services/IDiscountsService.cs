@@ -6,6 +6,6 @@ namespace PartsUnlimitedWebsite.Services
 {
 	public interface IDiscountsService
 	{
-		Task<IEnumerable<CategoryDiscount>> GetDiscounts();
+		Task<List<CategoryDiscount>> GetDiscounts();
 	}
 }
