@@ -4,7 +4,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ template "PartsUnlimited.API.fullname" $ }}
+  name: {{ template "PartsUnlimited.API.fullname" $ }}-{{ .name }}
   labels:
     app: {{ template "PartsUnlimited.API.name" $ }}
     chart: {{ template "PartsUnlimited.API.chart" $ }}
