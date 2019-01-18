@@ -1,0 +1,60 @@
+# loop over the canaries
+{{- range $canary := .Values.canaries }}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ template "PartsUnlimited.API.fullname" $ }}
+  labels:
+    app: {{ template "PartsUnlimited.API.name" $ }}
+    chart: {{ template "PartsUnlimited.API.chart" $ }}
+    release: {{ $.Release.Name }}
+    heritage: {{ $.Release.Service }}
+    system: {{ $.Values.system.name }}
+    canary: {{ .name }}
+spec:
+  replicas: {{ .replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ template "PartsUnlimited.API.name" $ }}
+      release: {{ $.Release.Name }}
+      system: {{ $.Values.system.name }}
+      canary: {{ .name }}
+  template:
+    metadata:
+      labels:
+        app: {{ template "PartsUnlimited.API.name" $ }}
+        release: {{ $.Release.Name }}
+        system: {{ $.Values.system.name }}
+        canary: {{ .name }}
+    spec:
+      containers:
+        - name: {{ template "PartsUnlimited.API.name" $ }}
+          image: "{{ $.Values.image.repository }}:{{ .tag }}"
+          imagePullPolicy: {{ $.Values.image.pullPolicy }}
+          ports:
+            - name: http
+              containerPort: 80
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: http
+            initialDelaySeconds: 3
+            periodSeconds: 30
+          resources:
+{{ toYaml $.Values.resources | indent 12 }}
+    {{- with $.Values.nodeSelector }}
+      nodeSelector:
+{{ toYaml $ | indent 8 }}
+    {{- end }}
+    {{- with $.Values.affinity }}
+      affinity:
+{{ toYaml $ | indent 8 }}
+    {{- end }}
+    {{- with $.Values.tolerations }}
+      tolerations:
+{{ toYaml $ | indent 8 }}
+    {{- end }}
+
+{{- end }}

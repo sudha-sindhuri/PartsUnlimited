@@ -1,0 +1,28 @@
+# loop over the canaries
+{{- range $canary := .Values.canaries }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ template "PartsUnlimited.API.fullname" $ }}-{{ .name }}
+  labels:
+    app: {{ template "PartsUnlimited.API.name" $ }}
+    chart: {{ template "PartsUnlimited.API.chart" $ }}
+    release: {{ $.Release.Name }}
+    heritage: {{ $.Release.Service }}
+    system: {{ $.Values.system.name }}
+    canary: {{ .name }}
+spec:
+  type: {{ $.Values.service.type }}
+  ports:
+    - port: {{ $.Values.service.port }}
+      targetPort: http
+      protocol: TCP
+      name: http
+  selector:
+    app: {{ template "PartsUnlimited.API.name" $ }}
+    release: {{ $.Release.Name }}
+    system: {{ $.Values.system.name }}
+    canary: {{ .name }}
+
+{{- end }}
