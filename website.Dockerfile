@@ -1,6 +1,6 @@
 FROM microsoft/dotnet:2.2-sdk AS build-env
 WORKDIR /app
-ARG version=1.0.0
+ARG version=1.0.0.0
 
 # install npm for building
 RUN curl -sL https://deb.nodesource.com/setup_8.x | bash - && apt-get update && apt-get install -yq nodejs build-essential make
@@ -24,7 +24,6 @@ RUN dotnet tool install dotnet-reportgenerator-globaltool --version 4.0.6 --tool
 RUN dotnet test --results-directory /testresults --logger "trx;LogFileName=test_results.xml" /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura /p:CoverletOutput=/testresults/coverage/ /p:Exclude="[xunit.*]*%2c[StackExchange.*]*" ./test/PartsUnlimited.UnitTests/PartsUnlimited.UnitTests.csproj
 # generate html reports using report generator tool
 RUN /tools/reportgenerator "-reports:/testresults/coverage/coverage.cobertura.xml" "-targetdir:/testresults/coverage/reports" "-reporttypes:HTMLInline;HTMLChart"
-RUN ls -la /testresults/coverage/reports
 
 # build and publish
 RUN dotnet publish src/PartsUnlimitedWebsite/PartsUnlimitedWebsite.csproj -c Release -o out /p:Version=${version}

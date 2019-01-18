@@ -41,6 +41,7 @@ namespace PartsUnlimited
                     // delete all default configuration providers
                     config.Sources.Clear();
                     config.AddJsonFile("config.json", optional: true);
+                    config.AddEnvironmentVariables();
                 })
                 .Build();
     }

@@ -1,0 +1,44 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: partsunlimitedwebsite
+  namespace: pu
+spec:
+  type: NodePort
+  selector:
+    app: partsunlimited
+    function: web
+  ports:
+  - name: http
+    port: 80
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pu-web
+  namespace: pu
+spec:
+  selector:
+    matchLabels:
+      app: partsunlimited
+      function: web
+  template:
+    metadata:
+      labels:
+        app: partsunlimited
+        function: web
+    spec:
+      containers:
+      - name: partsunlimitedwebsite
+        image: partsunlimitedwebsite:1.0.0.7
+        ports:
+        - containerPort: 80
+        env:
+        - name: SERVICES__DISCOUNTS__BASEADDRESS  # use __ instead of : for k8s
+          value: http://pu-api.pu/api/discounts
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 80
+          initialDelaySeconds: 3
+          periodSeconds: 30
