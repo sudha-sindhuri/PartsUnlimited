@@ -38,15 +38,13 @@ spec:
               protocol: TCP
           env:
           - name: SERVICES__DISCOUNTS__BASEADDRESS  # use __ instead of : for k8s
-            value: {{ $.Values.discountsBaseAddress }}
+            value: {{ $.Values.system.discountsBaseAddress }}
           - name: CANARY
             valueFrom:
               fieldRef:
                 fieldPath: metadata.labels['canary']
           - name: INGRESS_PROXY_URL
             value: {{ $.Values.system.ingressProxyUrl }}
-          - name: SERVICES__DISCOUNTS__BASEADDRESS  # use __ instead of : for k8s
-            value: {{ $.Values.system.services_discounts_baseAddress }}
           livenessProbe:
             httpGet:
               path: /health

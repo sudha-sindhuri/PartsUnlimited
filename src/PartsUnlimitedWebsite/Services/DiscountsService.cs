@@ -23,7 +23,7 @@ namespace PartsUnlimitedWebsite.Services
 			var discounts = new List<CategoryDiscount>();
 			try
 			{
-				var responseString = await _httpClient.GetStringAsync("").ConfigureAwait(false);
+				var responseString = await _httpClient.GetStringAsync("/api/discounts").ConfigureAwait(false);
 				discounts = JsonConvert.DeserializeObject<CategoryDiscount[]>(responseString).ToList();
 			}
 			catch (Exception ex)

@@ -14,8 +14,8 @@ canaries:
 
 system:
   name: PartsUnlimited
-  ingressProxyUrl: http://traefik-internal.pu.service
-  discountsBaseAddress: http://pu-api.local/api/discounts
+  ingressProxyUrl: http://traefik-internal.pu.svc
+  discountsBaseAddress: http://pu-api.local
 
 image:
   repository: partsunlimitedwebsite
