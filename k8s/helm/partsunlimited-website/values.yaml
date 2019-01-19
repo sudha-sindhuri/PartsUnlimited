@@ -1,4 +1,4 @@
-# Default values for PartsUnlimited.API.
+# Default values for PartsUnlimited.Website.
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
@@ -14,9 +14,11 @@ canaries:
 
 system:
   name: PartsUnlimited
+  ingressProxyUrl: http://traefik-internal.pu.service
+  discountsBaseAddress: http://pu-api.local/api/discounts
 
 image:
-  repository: partsunlimitedapi
+  repository: partsunlimitedwebsite
   pullPolicy: IfNotPresent
 
 service:
@@ -27,8 +29,8 @@ ingress:
   enabled: true
   path: /
   hosts:
-    - pu-api.local
-  class: traefik-internal
+    - pu-web.local
+  class: traefik-external
 
 resources: {}
   # We usually recommend not to specify default resources and to leave this as a conscious

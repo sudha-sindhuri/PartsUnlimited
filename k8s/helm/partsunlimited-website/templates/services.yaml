@@ -4,10 +4,10 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ template "partsunlimited-api.fullname" $ }}-{{ .name }}
+  name: {{ template "partsunlimited-website.fullname" $ }}-{{ .name }}
   labels:
-    app: {{ template "partsunlimited-api.name" $ }}
-    chart: {{ template "partsunlimited-api.chart" $ }}
+    app: {{ template "partsunlimited-website.name" $ }}
+    chart: {{ template "partsunlimited-website.chart" $ }}
     release: {{ $.Release.Name }}
     heritage: {{ $.Release.Service }}
     system: {{ $.Values.system.name }}
@@ -20,7 +20,7 @@ spec:
       protocol: TCP
       name: http
   selector:
-    app: {{ template "partsunlimited-api.name" $ }}
+    app: {{ template "partsunlimited-website.name" $ }}
     release: {{ $.Release.Name }}
     system: {{ $.Values.system.name }}
     canary: {{ .name }}

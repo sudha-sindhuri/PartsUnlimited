@@ -1,5 +1,5 @@
 {{- if .Values.ingress.enabled -}}
-{{- $fullName := include "partsunlimited-api.fullname" . -}}
+{{- $fullName := include "partsunlimited-website.fullname" . -}}
 {{- $ingressPath := .Values.ingress.path -}}
 ---
 apiVersion: extensions/v1beta1
@@ -7,8 +7,8 @@ kind: Ingress
 metadata:
   name: {{ $fullName }}
   labels:
-    app: {{ template "partsunlimited-api.name" . }}
-    chart: {{ template "partsunlimited-api.chart" . }}
+    app: {{ template "partsunlimited-website.name" . }}
+    chart: {{ template "partsunlimited-website.chart" . }}
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
     system: {{ $.Values.system.name }}

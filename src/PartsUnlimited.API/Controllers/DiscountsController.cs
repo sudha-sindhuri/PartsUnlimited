@@ -14,7 +14,7 @@ namespace PartsUnlimited.API.Controllers
         {
 			return new CategoryDiscount[]
 			{
-				new CategoryDiscount() { CategoryId = 5, Discount = 25 }
+				new CategoryDiscount() { CategoryId = 5, Discount = 22.67m }
 			};
         }
 

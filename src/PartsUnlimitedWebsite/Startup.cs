@@ -62,7 +62,8 @@ namespace PartsUnlimited
 
             });
 
-            // Add implementations
+			// Add implementations
+			services.AddSingleton(Configuration);
             services.AddSingleton<IMemoryCache, MemoryCache>();
             services.AddScoped<IOrdersQuery, OrdersQuery>();
             services.AddScoped<IRaincheckQuery, RaincheckQuery>();
@@ -93,7 +94,11 @@ namespace PartsUnlimited
 			// add API services
 			services.AddHttpClient<IDiscountsService, DiscountsService>(c =>
 			{
-				c.BaseAddress = new Uri(Configuration[ConfigurationPath.Combine("Services", "Discounts", "BaseAddress")]);
+				var baseUri = Configuration[ConfigurationPath.Combine("Services", "Discounts", "BaseAddress")];
+				var proxyUri = Configuration["INGRESS_PROXY_URL"] ?? baseUri;
+
+				c.BaseAddress = new Uri(proxyUri);
+                c.DefaultRequestHeaders.Add("HOST", new Uri(baseUri).Host);
 				c.DefaultRequestHeaders.Add("Accept", "application/json");
 			});
 
