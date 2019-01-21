@@ -1,0 +1,36 @@
+name: 1.0$(Rev:.r)
+
+trigger:
+- k8sdevops
+
+pool:
+  vmImage: 'Ubuntu-16.04'
+
+variables:
+  azureSubEndpoint: '10M Client Demo'
+  acrName: 'cdk8spu.azurecr.io'
+  imageRepoName: 'PartsUnlimited-API'
+
+steps:
+# - script: docker build -f Dockerfile -t $(imageName) .
+#   displayName: 'docker build'
+#   continueOnError: true
+
+- task: Docker@1
+  displayName: 'Build the image'
+  inputs:
+    azureSubscriptionEndpoint: '$(azureSubEndpoint)'
+    azureContainerRegistry: '$(acrName)'
+    imageName: '$(imageRepoName):$(Build.BuildNumber)'
+  continueOnError: false # only set to true if you are running unit tests and need the results
+
+- task: Docker@1
+  displayName: 'Push the image'
+  inputs:
+    command: 'Push an image'
+    azureSubscriptionEndpoint: '$(azureSubEndpoint)'
+    azureContainerRegistry: '$(acrName)'
+    imageName: '$(imageRepoName):$(Build.BuildNumber)'
+  condition: succeeded()
+
+

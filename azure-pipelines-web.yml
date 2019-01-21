@@ -7,12 +7,22 @@ pool:
   vmImage: 'Ubuntu-16.04'
 
 variables:
-  imageName: 'partsunlimitedwebsite:$(build.buildNumber)'
+  azureSubEndpoint: '10M Client Demo'
+  acrName: 'cdk8spu.azurecr.io'
+  imageRepoName: 'PartsUnlimited-Website'
 
 steps:
-- script: docker build -f Dockerfile -t $(imageName) .
-  displayName: 'docker build'
-  continueOnError: true
+# - script: docker build -f Dockerfile -t $(imageName) .
+#   displayName: 'docker build'
+#   continueOnError: true
+
+- task: Docker@1
+  displayName: 'Build the image'
+  inputs:
+    azureSubscriptionEndpoint: '$(azureSubEndpoint)'
+    azureContainerRegistry: '$(acrName)'
+    imageName: '$(imageRepoName):$(Build.BuildNumber)'
+  continueOnError: true # to make sure we get the test results even when the tests fail
 
 - script: |
     export id=$(docker images --filter "label=test=true" -q | head -1)
@@ -35,3 +45,12 @@ steps:
     summaryFileLocation: '$(System.DefaultWorkingDirectory)/testresults/coverage/coverage.cobertura.xml'
     reportDirectory: '$(System.DefaultWorkingDirectory)/testresults/coverage/reports'
   displayName: 'Publish coverage reports'
+
+- task: Docker@1
+  displayName: 'Push the image'
+  inputs:
+    command: 'Push an image'
+    azureSubscriptionEndpoint: '$(azureSubEndpoint)'
+    azureContainerRegistry: '$(acrName)'
+    imageName: '$(imageRepoName):$(Build.BuildNumber)'
+  condition: succeeded()
