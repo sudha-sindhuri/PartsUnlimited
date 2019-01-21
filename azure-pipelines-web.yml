@@ -1,7 +1,10 @@
-name: 1.0$(Rev:.r)
+name: 1.0.0$(Rev:.r)
 
 trigger:
-- k8sdevops
+  paths:
+    include:
+    - src/PartsUnlimitedWebsite
+    - k8s/helm/partsunlimited-website
 
 pool:
   vmImage: 'Ubuntu-16.04'
@@ -19,6 +22,7 @@ steps:
 - task: Docker@1
   displayName: 'Build the image'
   inputs:
+    dockerfile: 'website.Dockerfile'
     azureSubscriptionEndpoint: '$(azureSubEndpoint)'
     azureContainerRegistry: '$(acrName)'
     imageName: '$(imageRepoName):$(Build.BuildNumber)'
