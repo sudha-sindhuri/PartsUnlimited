@@ -15,6 +15,11 @@ kubectl create ns azdo-agents
 git clone https://github.com/Azure/helm-vsts-agent.git ./helm-vsts-agent
 
 helm init --kube-context $aksName
+# fix helm RBAC
+kubectl create serviceaccount --namespace kube-system tiller
+kubectl create clusterrolebinding tiller-cluster-rule --clusterrole=cluster-admin --serviceaccount=kube-system:tiller
+kubectl patch deploy --namespace kube-system tiller-deploy -p '{"spec":{"template":{"spec":{"serviceAccount":"tiller"}}}}'
+
 AZDO_TOKEN=$(echo -n $token | base64)
 helm install --kube-context $aksName \
   --name azdo-agents \
