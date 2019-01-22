@@ -10,7 +10,7 @@ rgName=$6
 
 # get the k8s cluster creds and write them to a local kubeconfig file
 az aks get-credentials -n $aksName -g $rgName
-kubectl create azdo-agents
+kubectl create ns azdo-agents
 
 git clone https://github.com/Azure/helm-vsts-agent.git ./helm-vsts-agent
 
