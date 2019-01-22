@@ -16,6 +16,7 @@ helm init --kube-context $aksName
 AZDO_TOKEN=$(echo -n $token | base64)
 helm install --kube-context $aksName \
   --name azdo-agents \
+  --namespace azdo-agents \
   ./helm-vsts-agent \
   --set vstsToken=$AZDO_TOKEN \
   --set vstsAccount=$account \
