@@ -14,6 +14,7 @@ kubectl apply -f ./tiller-rbac.yml
 
 # init helm
 helm init --kube-context $aksName --service-account tiller
+sleep 20 # wait for the tiller pods to start up
 
 git clone https://github.com/Azure/helm-vsts-agent.git ./helm-vsts-agent
 AZDO_TOKEN=$(echo -n $token | base64)
