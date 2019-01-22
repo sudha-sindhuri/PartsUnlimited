@@ -11,6 +11,7 @@ rgName=$6
 # get the k8s cluster creds and write them to a local kubeconfig file
 az aks get-credentials -n $aksName -g $rgName
 kubectl config get-contexts
+cat ~/kubeconfig
 
 git clone https://github.com/Azure/helm-vsts-agent.git ./helm-vsts-agent
 
