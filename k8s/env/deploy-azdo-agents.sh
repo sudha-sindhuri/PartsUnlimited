@@ -11,7 +11,7 @@ rgName=$6
 # get the k8s cluster creds and write them to a local kubeconfig file
 az aks get-credentials -n $aksName -g $rgName
 
-git clone https://github.com/Azure/helm-vsts-agent.git
+git clone https://github.com/Azure/helm-vsts-agent.git ./helm-vsts-agent
 helm init --kube-context $aksName
 AZDO_TOKEN=$(echo -n $token | base64)
 helm install --kube-context $aksName \
