@@ -18,7 +18,7 @@ sleep 20 # wait for the tiller pods to start up
 
 git clone https://github.com/Azure/helm-vsts-agent.git ./helm-vsts-agent
 AZDO_TOKEN=$(echo -n $token | base64)
-helm install --kube-context $aksName \
+helm upgrade --install --kube-context $aksName \
   --name azdo-agents \
   --namespace azdo-agents \
   ./helm-vsts-agent/charts/vsts-agent \
@@ -26,5 +26,7 @@ helm install --kube-context $aksName \
   --set vstsAccount=$account \
   --set vstsPool=$pool \
   --set replicas=$replicas \
-  --set resources.limits.cpu=0 \
-  --set resources.requests.cpu=0
+  --set resources.limits.cpu=1 \
+  --set resources.limits.memory=2Gi \
+  --set resources.requests.cpu=.5 \
+  --set resources.requests.memory=1Gi
