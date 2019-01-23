@@ -16,7 +16,7 @@ password=$(az acr credential show -n $acrName -g $rgName --query 'passwords[1].v
 nsExists=$(kubectl get namespaces | grep $3 -w)
 if [ "$nsExists" = "" ]; then
     echo "Creating ns $namespace"
-    kubectl create ns $3
+    kubectl create ns $namespace
 else
     echo "ns $namespace already exists"
 fi
