@@ -20,6 +20,7 @@ system:
 image:
   repository: partsunlimitedwebsite
   pullPolicy: IfNotPresent
+  pullSecretName: "foo"  # enter a value if you need a pull secret for your registry
 
 service:
   type: ClusterIP

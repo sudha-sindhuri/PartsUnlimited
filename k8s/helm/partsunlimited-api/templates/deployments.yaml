@@ -28,6 +28,10 @@ spec:
         system: {{ $.Values.system.name }}
         canary: {{ .name }}
     spec:
+      {{- if $.Values.image.pullSecretName }}
+      imagePullSecrets:
+      - name: {{ $.Values.image.pullSecretName | quote }}
+      {{- end }}
       containers:
         - name: {{ template "partsunlimited-api.name" $ }}
           image: "{{ $.Values.image.repository }}:{{ .tag }}"
