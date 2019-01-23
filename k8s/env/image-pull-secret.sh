@@ -3,9 +3,14 @@
 # parameters
 rgName=$1
 acrName=$2
-namespace=$3
+aksName=$3
+namespace=$4
+
+echo "Getting credentials for cluster $askName"
+az aks get-credentials -n $aksName -g $rgName
 
 # get the password to the ACR
+echo "Getting password for ACR"
 password=$(az acr credential show -n $acrName -g $rgName --query 'passwords[1].value' --output tsv)
 
 nsExists=$(kubectl get namespaces | grep $3 -w)
