@@ -13,7 +13,7 @@ az aks get-credentials -n $aksName -g $rgName
 echo "Getting password for ACR"
 password=$(az acr credential show -n $acrName -g $rgName --query 'passwords[1].value' --output tsv)
 
-nsExists=$(kubectl get namespaces | grep $3 -w)
+nsExists=$(kubectl get namespaces | grep $namespace -w)
 if [ "$nsExists" = "" ]; then
     echo "Creating ns $namespace"
     kubectl create ns $namespace
