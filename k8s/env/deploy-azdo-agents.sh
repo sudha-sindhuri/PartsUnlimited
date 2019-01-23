@@ -24,7 +24,7 @@ git clone https://github.com/Azure/helm-vsts-agent.git ./helm-vsts-agent
 AZDO_TOKEN=$(echo -n $token | base64)
 echo "Calling helm upgrade to install/upgrade the AzDO agents"
 helm upgrade --install --kube-context $aksName \
-  --name azdo-agents \
+  azdo-agents \
   --namespace azdo-agents \
   ./helm-vsts-agent/charts/vsts-agent \
   --set vstsToken=$AZDO_TOKEN \
