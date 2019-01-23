@@ -12,7 +12,7 @@ pool:
 variables:
   azureSubEndpoint: '10M Client Demo'
   acrName: 'cdk8spu.azurecr.io'
-  imageRepoName: 'PartsUnlimited-API'
+  imageRepoName: 'partsunlimited-api'
 
 steps:
 # - script: docker build -f Dockerfile -t $(imageName) .
