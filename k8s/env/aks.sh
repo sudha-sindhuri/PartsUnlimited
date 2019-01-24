@@ -15,4 +15,4 @@ az group create -n $rgName -l $location --tags owner=colind app=k8spu
 
 # create the ACR enabling admin access
 echo "Create AKS"
-az aks create -n $aksName -g $rgName -l $location -k $kubeVersion --node-count $nodeCount --generate-ssh-keys
+az aks create -n $aksName -g $rgName -l $location -k $kubeVersion --node-count $nodeCount
