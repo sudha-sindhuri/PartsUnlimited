@@ -5,7 +5,7 @@ rgName=$1
 location=$2
 aksName=$3
 nodeCount=$4
-spn=$5
+spnAppId=$5
 kubeVersion="1.11.5"
 
 # assumes you're logged in already - if running in AzDO, use Azure CLI task with endpoint
@@ -16,4 +16,4 @@ az group create -n $rgName -l $location --tags owner=colind app=k8spu
 
 # create the ACR enabling admin access
 echo "Create AKS"
-az aks create -n $aksName -g $rgName -l $location -k $kubeVersion --node-count $nodeCount --service-principal $spn
+az aks create -n $aksName -g $rgName -l $location -k $kubeVersion --node-count $nodeCount --service-principal $spnAppId
