@@ -26,6 +26,7 @@ steps:
     azureSubscriptionEndpoint: '$(azureSubEndpoint)'
     azureContainerRegistry: '$(acrName)'
     imageName: '$(imageRepoName):$(Build.BuildNumber)'
+    arguments: '--build-arg version=$(Build.BuildNumber)'
   continueOnError: true # to make sure we get the test results even when the tests fail
 
 - script: |
