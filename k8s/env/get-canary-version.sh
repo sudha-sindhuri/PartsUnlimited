@@ -14,16 +14,16 @@ buildNum=$8
 echo "Getting credentials for cluster $askName"
 az aks get-credentials -n $aksName -g $rgName
 
-
-az aks get-credentials -n $(AKSName) -g $(RGName)
-installed=$(helm ls | grep $(Namespace)-api | wc -l)
+echo "Checking if release $helmReleaseName exists"
+installed=$(helm ls | grep $helmReleaseName | wc -l)
 if [ "$installed" = "1" ]; then
-  echo "Getting release version for $helmReleaseName-$appName-$canary in $namespace"
+  echo "Getting release version for $helmReleaseName-$appName-$canary in ns $namespace"
   version=$(kubectl get deploy $helmReleaseName-$appName-$canary -n $namespace -o jsonpath="{.spec.template.spec.containers[?(@.name=='$appName')].image}" | sed 's/.*://')
 else
   echo "No install - use current build number"
   version="$buildNum"
 fi
+
 if [ "$version" = "" ]; then
   echo "Unable to determine version - default to build num $buildNum"
   version="$buildNum"
