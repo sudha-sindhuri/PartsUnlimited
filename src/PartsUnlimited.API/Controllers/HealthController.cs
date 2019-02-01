@@ -47,7 +47,7 @@ namespace PartsUnlimited.API.Controllers
 
 		// GET health/all
 		[HttpGet("all")]
-		public ActionResult<string> Version()
+		public ActionResult<string> All()
 		{
 			return $"{VersionNumber}|{_configuration["CANARY"]}";
 		}
