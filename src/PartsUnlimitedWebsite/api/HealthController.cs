@@ -10,7 +10,7 @@ namespace PartsUnlimited.API.Controllers
 	{
 		private readonly IConfiguration _configuration;
 
-		protected string Version
+		protected string VersionNumber
 		{
 			get
 			{
@@ -35,7 +35,7 @@ namespace PartsUnlimited.API.Controllers
 		[HttpGet("version")]
 		public string Version()
 		{
-			return Version;
+			return VersionNumber;
 		}
 
 		// GET health/canary
@@ -49,7 +49,7 @@ namespace PartsUnlimited.API.Controllers
 		[HttpGet("all")]
 		public ActionResult<string> Version()
 		{
-			return $"{Version}|{_configuration["CANARY"]}";
+			return $"{VersionNumber}|{_configuration["CANARY"]}";
 		}
 	}
 }
