@@ -10,6 +10,15 @@ namespace PartsUnlimited.API.Controllers
 	{
 		private readonly IConfiguration _configuration;
 
+		protected string Version
+		{
+			get
+			{
+				return Assembly.GetEntryAssembly().GetCustomAttribute<AssemblyFileVersionAttribute>()
+				.Version.ToString();
+			}
+		}
+
 		public HealthController(IConfiguration configuration)
 		{
 			_configuration = configuration;
@@ -26,8 +35,7 @@ namespace PartsUnlimited.API.Controllers
 		[HttpGet("version")]
 		public ActionResult<string> Version()
 		{
-			return Assembly.GetEntryAssembly().GetCustomAttribute<AssemblyFileVersionAttribute>()
-				.Version.ToString();
+			return Version;
 		}
 
 		// GET health/canary
@@ -35,6 +43,13 @@ namespace PartsUnlimited.API.Controllers
 		public ActionResult<string> Canary()
 		{
 			return _configuration["CANARY"];
+		}
+
+		// GET health/all
+		[HttpGet("all")]
+		public ActionResult<string> Version()
+		{
+			return $"{Version}|{_configuration["CANARY"]}";
 		}
 	}
 }
