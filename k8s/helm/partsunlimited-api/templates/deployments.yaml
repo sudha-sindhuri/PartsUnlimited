@@ -51,6 +51,12 @@ spec:
               port: http
             initialDelaySeconds: 3
             periodSeconds: 30
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: http
+            initialDelaySeconds: 3
+            periodSeconds: 3
           resources:
 {{ toYaml $.Values.resources | indent 12 }}
     {{- with $.Values.nodeSelector }}
