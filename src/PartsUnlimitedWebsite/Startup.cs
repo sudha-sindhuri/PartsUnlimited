@@ -166,6 +166,10 @@ namespace PartsUnlimited
             // Configure Session.
             app.UseSession();
 
+            // use for reverse proxy path-based routing
+            var basePath = Configuration["PathBase"] ?? "/";
+            app.UsePathBase(basePath);
+
             // Add static files to the request pipeline
             app.UseStaticFiles();
 

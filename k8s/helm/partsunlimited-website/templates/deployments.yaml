@@ -49,6 +49,8 @@ spec:
                 fieldPath: metadata.labels['canary']
           - name: INGRESS_PROXY_URL
             value: {{ $.Values.system.ingressProxyUrl }}
+          - name: PathBase
+            value: {{ $.Values.ingress.path }}
           livenessProbe:
             httpGet:
               path: /health
