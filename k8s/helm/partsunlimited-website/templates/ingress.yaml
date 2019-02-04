@@ -14,6 +14,7 @@ metadata:
     system: {{ $.Values.system.name }}
   annotations:
     kubernetes.io/ingress.class: {{ .Values.ingress.class }}
+    traefik.frontend.rule.type: PathPrefixStrip # use to perform path-based routing
     traefik.ingress.kubernetes.io/service-weights: |
       {{- range $canary := .Values.canaries }}
         {{ $fullName }}-{{ .name }}: {{ .weight }}%

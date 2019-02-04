@@ -28,7 +28,7 @@ service:
 
 ingress:
   enabled: true
-  path: /
+  path: /site
   hosts:
     - __HostName__
   class: __TraefikClass__

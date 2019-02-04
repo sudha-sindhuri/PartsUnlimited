@@ -28,7 +28,7 @@ service:
 
 ingress:
   enabled: true
-  path: /
+  path: /site
   hosts:
     - pu-web.local
   class: traefik-external
