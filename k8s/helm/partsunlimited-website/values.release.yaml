@@ -1,0 +1,52 @@
+# Default values for PartsUnlimited.Website.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+canaries:
+  - name: blue
+    replicaCount: 1
+    weight: 80
+    tag: __BlueTag__
+  - name: green
+    replicaCount: __GreenReplicas__
+    weight: 20
+    tag: __GreenTag__
+
+system:
+  name: PartsUnlimited
+  ingressProxyUrl: __IngressProxyUrl__
+  discountsBaseAddress: __DiscountsBaseAddress__
+
+image:
+  repository: __Repository__
+  pullPolicy: IfNotPresent
+  pullSecretName: "__PullSecretName__"
+
+service:
+  type: __ServiceType__
+  port: 80
+
+ingress:
+  enabled: true
+  path: /
+  hosts:
+    - __HostName__
+  class: __TraefikClass__
+
+resources: {}
+  # We usually recommend not to specify default resources and to leave this as a conscious
+  # choice for the user. This also increases chances charts run on environments with little
+  # resources, such as Minikube. If you do want to specify resources, uncomment the following
+  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+  # limits:
+  #  cpu: 100m
+  #  memory: 128Mi
+  # requests:
+  #  cpu: 100m
+  #  memory: 128Mi
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
