@@ -42,5 +42,6 @@
     "Discounts": {
       "BaseAddress": "https://localhost:44358/api/discounts"
     }
-  }
+  },
+  "PathBase": "/site"
 }
