@@ -328,7 +328,7 @@ header {
 					top: 20px;
 
 					a {
-						background-image: url('/images/cart_icon.png');
+						background-image: url('~/images/cart_icon.png');
 						display: block;
 						width: 40px;
 						height: 65px;
@@ -342,7 +342,7 @@ header {
 						font-style: normal;
 
 						&:hover {
-							background-image: url('/images/cart_mo_icon.png');
+							background-image: url('~/images/cart_mo_icon.png');
 						}
 
 						span {
@@ -451,10 +451,10 @@ header {
 							}
 
 							&#shopping-cart-link {
-								background-image: url('/images/cart_icon.png');
+								background-image: url('~/images/cart_icon.png');
 
 								&:hover {
-									background-image: url('/images/cart_mo_icon.png');
+									background-image: url('~/images/cart_mo_icon.png');
 								}
 
 								span {
@@ -473,34 +473,34 @@ header {
 							}
 
 							&#login-link {
-								background-image: url('/images/profile_icon.png');
+								background-image: url('~/images/profile_icon.png');
 
 								&:hover {
-									background-image: url('/images/profile_mo_icon.png');
+									background-image: url('~/images/profile_mo_icon.png');
 								}
 							}
 
 							&#profile-link {
-								background-image: url('/images/profile_icon.png');
+								background-image: url('~/images/profile_icon.png');
 
 								&:hover {
-									background-image: url('/images/profile_mo_icon.png');
+									background-image: url('~/images/profile_mo_icon.png');
 								}
 							}
 
 							&#home-link {
-								background-image: url('/images/home_icon.png');
+								background-image: url('~/images/home_icon.png');
 
 								&:hover {
-									background-image: url('/images/home_mo_icon.png');
+									background-image: url('~/images/home_mo_icon.png');
 								}
 							}
 
 							&#admin-link {
-								background-image: url('/images/admin_icon.png');
+								background-image: url('~/images/admin_icon.png');
 
 								&:hover {
-									background-image: url('/images/admin_mo_icon.png');
+									background-image: url('~/images/admin_mo_icon.png');
 								}
 							}
 						}
@@ -609,10 +609,10 @@ header {
 							}
 
 							&#search-link {
-								background-image: url('/images/search_icon.png');
+								background-image: url('~/images/search_icon.png');
 
 								&:hover {
-									background-image: url('/images/search_mo_icon.png');
+									background-image: url('~/images/search_mo_icon.png');
 									color: $color-inverse;
 								}
 							}
@@ -683,7 +683,7 @@ header {
 			background-color: transparent;
 			width: auto;
 			min-width: 30px;
-			background: url('/images/mobile_search_icon.png') no-repeat;
+			background: url('~/images/mobile_search_icon.png') no-repeat;
 			background-size: 24px;
 			padding: 0;
 			height: 39px;

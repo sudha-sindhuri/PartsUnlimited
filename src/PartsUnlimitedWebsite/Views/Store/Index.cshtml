@@ -14,7 +14,7 @@
                     <a href="@Url.Action("Browse", "Store", new { categoryId = category.CategoryId })" title="@category.Name">
                         <div class="product-image-container hidden-xs">
                             <div class="image">
-                                <img src="/images/@category.ImageUrl" alt="@category.Name" />
+                                <img src="~/images/@category.ImageUrl" alt="@category.Name" />
                             </div>
                             <div class="detail">
                                 <h5>@category.Name</h5>
@@ -23,7 +23,7 @@
 
                         <div class="row visible-xs">
                             <div class="col-xs-4 col-sm-12 col-md-12 no-gutter-sm no-gutter image">
-                                <img src="/images/@category.ImageUrl" alt="@category.Name" />
+                                <img src="~/images/@category.ImageUrl" alt="@category.Name" />
                             </div>
                             <div class="col-xs-8 col-sm-12 col-md-12 detail">
                                 <h4>@category.Name</h4>

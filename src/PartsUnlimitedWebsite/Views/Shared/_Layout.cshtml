@@ -7,7 +7,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="Icon" href="/images/favicon.ico" />
+    <link rel="Icon" href="~/images/favicon.ico" />
     <title>@ViewBag.Title – Parts Unlimited</title>
     @await Component.InvokeAsync("Configuration") 
 
@@ -19,7 +19,7 @@
                 <div class="primary-menu">
                     <div class="pull-left logo">
                         <a class="block logo-image" href="@Url.Action("Index", "Home")">
-                            <img src="/images/unlimited_logo.png"/>
+                            <img src="~/images/unlimited_logo.png"/>
                         </a>
                         <a class="block" href="@Url.Action("Index", "Home")">
                             <h1>Parts Unlimited</h1>
@@ -122,7 +122,7 @@
                         </ul>
                         <p>Deploy to Azure</p>
                         <a class="deploy-azure">
-                            <img src="/images/deploy_button.png"/>
+                            <img src="~/images/deploy_button.png"/>
                         </a>
                     </div>
                 </div>
@@ -147,12 +147,12 @@
             </div>
         </div>
     </footer>
-    <link href="/Content/Site.css" rel="stylesheet" type="text/css" />
-    <link href="/Content/Home.css" rel="stylesheet" type="text/css" />
-    <link href="/Content/Account.css" rel="stylesheet" type="text/css" />
-    <link href="/Content/ShoppingCart.css" rel="stylesheet" type="text/css" />
-    <link href="/Content/Store.css" rel="stylesheet" type="text/css" />
-    <link href="/lib/bootstrap/css/bootstrap.css" rel="stylesheet" type="text/css"/>
+    <link href="~/Content/Site.css" rel="stylesheet" type="text/css" />
+    <link href="~/Content/Home.css" rel="stylesheet" type="text/css" />
+    <link href="~/Content/Account.css" rel="stylesheet" type="text/css" />
+    <link href="~/Content/ShoppingCart.css" rel="stylesheet" type="text/css" />
+    <link href="~/Content/Store.css" rel="stylesheet" type="text/css" />
+    <link href="~/lib/bootstrap/css/bootstrap.css" rel="stylesheet" type="text/css"/>
     <script src="~/lib/jquery/jquery.js"></script>
     <script src="~/lib/jquery-zoom/jquery.zoom.js"></script>
     <script src="~/lib/bootstrap/js/bootstrap.min.js"></script>
