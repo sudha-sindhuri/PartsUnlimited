@@ -3,6 +3,7 @@
 
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.Configuration;
 using PartsUnlimited.Models;
 using PartsUnlimited.ViewModels;
 using PartsUnlimitedWebsite.Services;
@@ -18,13 +19,16 @@ namespace PartsUnlimited.Controllers
         private readonly IPartsUnlimitedContext _db;
         private readonly IMemoryCache _cache;
         private readonly IDiscountsService _discountsService;
+		private readonly IConfiguration _config;
 		public int roco_count = 1000;
 
-        public HomeController(IPartsUnlimitedContext context, IMemoryCache memoryCache, IDiscountsService discountsService)
+        public HomeController(IPartsUnlimitedContext context, IMemoryCache memoryCache, IDiscountsService discountsService,
+			IConfiguration configuration)
         {
             _db = context;
             _cache = memoryCache;
 			_discountsService = discountsService;
+			_config = configuration;
         }
 
         //
@@ -48,7 +52,8 @@ namespace PartsUnlimited.Controllers
                 _cache.Set("newarrivals", newProducts, new MemoryCacheEntryOptions().SetAbsoluteExpiration(TimeSpan.FromMinutes(10)).SetPriority(CacheItemPriority.High));
             }
 
-            var viewModel = new HomeViewModel
+			ViewBag.PathBase = _config["PathBase"] ?? "/";
+			var viewModel = new HomeViewModel
             {
 				Discounts = await _discountsService.GetDiscounts(),
                 NewProducts = newProducts,
