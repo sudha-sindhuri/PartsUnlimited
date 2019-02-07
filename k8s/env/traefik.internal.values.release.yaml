@@ -1,6 +1,6 @@
 ## Default values for Traefik
 image: traefik
-imageTag: 1.7.7
+imageTag: __TraefikVersion__
 serviceType: NodePort
 # loadBalancerIP: ""
 # loadBalancerSourceRanges: []
