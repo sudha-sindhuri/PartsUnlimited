@@ -65,11 +65,11 @@ forwardedHeaders:
   # - 10.0.0.0/8
 ssl:
   enabled: false
-  enforced: true
-  permanentRedirect: true
+  enforced: false
+  permanentRedirect: false
   upstream: false
   insecureSkipVerify: false
-  generateTLS: true
+  generateTLS: false
   # defaultCN: "example.com"
     # or *.example.com
   defaultSANList: []
