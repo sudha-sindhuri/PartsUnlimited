@@ -4,7 +4,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace PartsUnlimited.Telemetry
+namespace PartsUnlimited.Telemetry.Providers
 {
     public class EmptyTelemetryProvider : ITelemetryProvider
     {

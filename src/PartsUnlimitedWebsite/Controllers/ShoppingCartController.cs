@@ -85,12 +85,18 @@ namespace PartsUnlimited.Controllers
 
             await _db.SaveChangesAsync(HttpContext.RequestAborted);
 
-            // Trace add process
-            var measurements = new Dictionary<string, double>()
-            {
-                {"ElapsedMilliseconds", System.DateTime.Now.Subtract(startTime).TotalMilliseconds }
-            };
-            _telemetry.TrackEvent("Cart/Server/Add", null, measurements);
+			// Trace add process
+			var measurements = new Dictionary<string, double>()
+			{
+				{"ElapsedMilliseconds", System.DateTime.Now.Subtract(startTime).TotalMilliseconds },
+				{"Price", (double)addedProduct.Price }
+			};
+			var properties = new Dictionary<string, string>()
+			{
+				{ "ProductCategory", addedProduct.Category.Name },
+				{ "Product", addedProduct.Title }
+			};
+			_telemetry.TrackEvent("Cart/Server/Add", properties, measurements);
 
             // Go back to the main store page for more shopping
             return RedirectToAction("Index");

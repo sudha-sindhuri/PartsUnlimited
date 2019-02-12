@@ -13,6 +13,7 @@ using PartsUnlimited.Recommendations;
 using PartsUnlimited.Search;
 using PartsUnlimited.Security;
 using PartsUnlimited.Telemetry;
+using PartsUnlimited.Telemetry.Providers;
 using PartsUnlimited.WebsiteConfiguration;
 using PartsUnlimitedWebsite.Services;
 using System;
