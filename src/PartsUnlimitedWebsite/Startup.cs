@@ -2,6 +2,7 @@
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Configuration;
@@ -16,7 +17,11 @@ using PartsUnlimited.Telemetry;
 using PartsUnlimited.Telemetry.Providers;
 using PartsUnlimited.WebsiteConfiguration;
 using PartsUnlimitedWebsite.Services;
+using PartsUnlimitedWebsite.Telemetry.Providers;
+using Prometheus;
 using System;
+using System.IO;
+using System.Reflection;
 
 namespace PartsUnlimited
 {
@@ -69,7 +74,14 @@ namespace PartsUnlimited
             services.AddScoped<IOrdersQuery, OrdersQuery>();
             services.AddScoped<IRaincheckQuery, RaincheckQuery>();
 
-            services.AddSingleton<ITelemetryProvider, EmptyTelemetryProvider>();
+            services.AddSingleton<ITelemetryProvider, PrometheusTelemetryProvider>(p =>
+			{
+				var version = Assembly.GetEntryAssembly().GetCustomAttribute<AssemblyFileVersionAttribute>()
+					.Version.ToString();
+				var env = Configuration["ASPNETCORE_ENVIRONMENT"];
+				var canary = Configuration["CANARY"];
+				return new PrometheusTelemetryProvider(version, env, canary);
+			});
             services.AddScoped<IProductSearch, StringContainsProductSearch>();
 
             SetupRecommendationService(services);
@@ -164,11 +176,16 @@ namespace PartsUnlimited
 
         public void Configure(IApplicationBuilder app)
         {
+            var basePath = Configuration["PathBase"] ?? "/";
+
             // Configure Session.
             app.UseSession();
 
+			// prometheus
+			app.UseMethodTracking();
+			app.UseMetricServer($"{basePath}/metrics");
+
             // use for reverse proxy path-based routing
-            var basePath = Configuration["PathBase"] ?? "/";
             app.UsePathBase(basePath);
 
             // Add static files to the request pipeline
