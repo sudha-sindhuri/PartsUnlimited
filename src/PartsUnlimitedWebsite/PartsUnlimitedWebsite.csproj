@@ -22,8 +22,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\PartsUnlimited.Telemetry\PartsUnlimited.Telemetry.csproj" />
     <ProjectReference Include="..\PartsUnlimited.Models\PartsUnlimited.Models.csproj" />
+    <ProjectReference Include="..\PartsUnlimited.Telemetry\PartsUnlimited.Telemetry.csproj" />
   </ItemGroup>
 
   <ItemGroup>
