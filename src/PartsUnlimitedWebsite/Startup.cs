@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using PartsUnlimited.Areas.Admin;
 using PartsUnlimited.Models;
 using PartsUnlimited.Queries;
@@ -29,10 +30,14 @@ namespace PartsUnlimited
     {
         public IConfiguration Configuration { get; }
         public IServiceCollection service { get; private set; }
+		
+		public ILoggerFactory LoggerFactory { get; private set; }
 
-        public Startup(IConfiguration configuration)
+
+		public Startup(IConfiguration configuration, ILoggerFactory loggerFactory)
         {
             Configuration = configuration;
+			LoggerFactory = loggerFactory;
         }
 
         public void ConfigureServices(IServiceCollection services)
@@ -76,11 +81,12 @@ namespace PartsUnlimited
 
             services.AddSingleton<ITelemetryProvider, PrometheusTelemetryProvider>(p =>
 			{
+				var logger = LoggerFactory.CreateLogger<PrometheusTelemetryProvider>();
 				var version = Assembly.GetEntryAssembly().GetCustomAttribute<AssemblyFileVersionAttribute>()
 					.Version.ToString();
 				var env = Configuration["ASPNETCORE_ENVIRONMENT"];
 				var canary = Configuration["CANARY"];
-				return new PrometheusTelemetryProvider(version, env, canary);
+				return new PrometheusTelemetryProvider(version, env, canary, logger);
 			});
             services.AddScoped<IProductSearch, StringContainsProductSearch>();
 
@@ -89,7 +95,6 @@ namespace PartsUnlimited
             services.AddScoped<IWebsiteOptions>(p =>
             {
                 var telemetry = p.GetRequiredService<ITelemetryProvider>();
-
                 return new ConfigurationWebsiteOptions(Configuration.GetSection("WebsiteOptions"), telemetry);
             });
 

@@ -1,4 +1,5 @@
-﻿using PartsUnlimited.Telemetry;
+﻿using Microsoft.Extensions.Logging;
+using PartsUnlimited.Telemetry;
 using Prometheus;
 using System;
 using System.Collections.Generic;
@@ -26,12 +27,14 @@ namespace PartsUnlimitedWebsite.Telemetry.Providers
 		readonly string version;
 		readonly string environment;
 		readonly string canary;
+		readonly ILogger logger;
 
-		public PrometheusTelemetryProvider(string version, string environment, string canary)
+		public PrometheusTelemetryProvider(string version, string environment, string canary, ILogger logger = null)
 		{
 			this.version = version;
 			this.environment = environment;
 			this.canary = canary;
+			this.logger = logger;
 		}
 
 		public void TrackEvent(string message)
@@ -47,15 +50,18 @@ namespace PartsUnlimitedWebsite.Telemetry.Providers
 				{
 					var price = measurements["Price"];
 					productHistogram.WithLabels(labels).Observe(price);
+					logger.LogInformation("Logged price info");
 				}
 				if (measurements.ContainsKey("ElapsedMilliseconds"))
 				{
 					var elapsed = measurements["ElapsedMilliseconds"];
 					sqlGauge.WithLabels(labels).Set(elapsed);
+					logger.LogInformation("Logged sql info");
 				}
 			}
-			catch
+			catch (Exception ex)
 			{
+				logger.LogError(ex, ex.Message);
 				// swallow
 			}
 		}
