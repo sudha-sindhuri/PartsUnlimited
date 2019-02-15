@@ -1,0 +1,21 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: website-monitor
+  namespace: monitoring
+  labels:
+    prometheus: kube-prometheus
+    tier: website
+spec:
+  jobLabel: app
+  selector:
+    matchLabels:
+      release: pu-dev-website
+      system: PartsUnlimited
+      app: partsunlimited-website
+  namespaceSelector:
+    any: true
+  endpoints:
+  - port: http
+    path: /site/metrics
+    interval: 15s

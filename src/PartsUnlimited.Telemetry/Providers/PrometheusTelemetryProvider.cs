@@ -10,18 +10,22 @@ namespace PartsUnlimitedWebsite.Telemetry.Providers
 {
 	public class PrometheusTelemetryProvider : ITelemetryProvider
 	{
-		readonly Histogram productHistogram = Metrics.CreateHistogram(
-			"ProductCounter", "Counts products when added to basket", 
-			new HistogramConfiguration
-			{
-				LabelNames = new[] { "category", "product", "version", "environment", "canary" }
-			});
+		static readonly string[] labelNames = new[] { "category", "product", "version", "environment", "canary"  };
 
-		readonly Gauge sqlGauge = Metrics.CreateGauge(
-			"AddProductsSQLGauge", "Counts products when added to basket",
+		readonly Gauge productGauge = Metrics.CreateGauge(
+			"pu_product_add", "Records products when added to basket", 
 			new GaugeConfiguration
 			{
-				LabelNames = new[] { "category", "product", "version", "environment", "canary" }
+				LabelNames = labelNames
+			});
+
+		readonly Histogram dependencyHisto = Metrics.CreateHistogram(
+			"pu_dependency_duration", "Duration of dependency call",
+			new HistogramConfiguration
+			{
+				// 1m to 32K ms
+				Buckets = Histogram.ExponentialBuckets(0.001, 2, 16),
+				LabelNames = labelNames
 			});
 
 		readonly string version;
@@ -49,13 +53,13 @@ namespace PartsUnlimitedWebsite.Telemetry.Providers
 				if (measurements.ContainsKey("Price"))
 				{
 					var price = measurements["Price"];
-					productHistogram.WithLabels(labels).Observe(price);
+					productGauge.WithLabels(labels).Set(price);
 					logger.LogInformation("Logged price info");
 				}
 				if (measurements.ContainsKey("ElapsedMilliseconds"))
 				{
 					var elapsed = measurements["ElapsedMilliseconds"];
-					sqlGauge.WithLabels(labels).Set(elapsed);
+					dependencyHisto.WithLabels(labels).Observe(elapsed);
 					logger.LogInformation("Logged sql info");
 				}
 			}

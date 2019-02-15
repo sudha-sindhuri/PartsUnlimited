@@ -187,7 +187,9 @@ namespace PartsUnlimited
             app.UseSession();
 
 			// prometheus
-			app.UseMethodTracking();
+			var version = Assembly.GetEntryAssembly().GetCustomAttribute<AssemblyFileVersionAttribute>()
+					.Version.ToString();
+			app.UseMethodTracking(version, Configuration["ASPNETCORE_ENVIRONMENT"], Configuration["CANARY"]);
 			app.UseMetricServer($"{basePath}/metrics");
 
             // use for reverse proxy path-based routing
