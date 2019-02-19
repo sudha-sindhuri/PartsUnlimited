@@ -12,9 +12,9 @@ namespace PartsUnlimitedWebsite.Telemetry.Providers
 	{
 		static readonly string[] labelNames = new[] { "category", "product", "version", "environment", "canary"  };
 
-		readonly Gauge productGauge = Metrics.CreateGauge(
-			"pu_product_add", "Records products when added to basket", 
-			new GaugeConfiguration
+		readonly Counter productCounter = Metrics.CreateCounter(
+			"pu_product_add", "Increments when product is added to basket", 
+			new CounterConfiguration
 			{
 				LabelNames = labelNames
 			});
@@ -52,8 +52,7 @@ namespace PartsUnlimitedWebsite.Telemetry.Providers
 				var labels = new string[] { properties["ProductCategory"], properties["Product"], version, environment, canary };
 				if (measurements.ContainsKey("Price"))
 				{
-					var price = measurements["Price"];
-					productGauge.WithLabels(labels).Set(price);
+					productCounter.WithLabels(labels).Inc();
 					logger.LogInformation("Logged price info");
 				}
 				if (measurements.ContainsKey("ElapsedMilliseconds"))
