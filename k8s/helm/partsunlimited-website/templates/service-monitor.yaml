@@ -1,0 +1,24 @@
+
+{{- if .Values.service.monitoring.enabled -}}
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: {{ template "partsunlimited-website.fullname" $ }}-monitor
+  namespace: {{ $.Values.service.monitoring.namespace }}
+  labels:
+    prometheus: kube-prometheus
+    tier: website
+spec:
+  jobLabel: app
+  selector:
+    matchLabels:
+      app: {{ template "partsunlimited-website.name" $ }}
+      release: {{ $.Release.Name }}
+      system: {{ $.Values.system.name }}
+  namespaceSelector:
+    any: true
+  endpoints:
+  - port: http
+    path: {{ $.Values.ingress.path }}/metrics
+    interval: 15s
+{{- end }}
