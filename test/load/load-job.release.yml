@@ -64,7 +64,7 @@ spec:
             - name: TEST_TIME  # 2s or 5m etc.
               value: '2s'
             - name: URL
-              value: __URL__
+              value: __LoadUrl__
             - name: WEIGHTED_CATEGORY
               value: '0'
             - name: WEIGHTED_PERCENTAGE
