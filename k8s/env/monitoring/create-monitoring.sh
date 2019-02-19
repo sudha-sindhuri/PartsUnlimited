@@ -31,7 +31,7 @@ echo "Fixing kubelet service monitoring to http"
 kubectl -n $namespace get servicemonitor kube-prometheus-exporter-kubelets -o yaml | sed 's/https/http/' | kubectl replace -f -
 
 echo "Create custom-dashboards config map"
-kubectl create configmap --namespace $namespace custom-dashboards --from-file=custom-dashboards/pu-business.json --from-file=custom-dashboards/pu-perf.json
+kubectl create configmap --namespace $namespace custom-dashboards --from-file=custom-dashboards/pu-business-dashboard.json --from-file=custom-dashboards/pu-perf-dashboard.json
 
 # install kube-prometheus
 echo "Installing kube-prometheus with custom dashboards"
