@@ -3,7 +3,7 @@
 apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
 metadata:
-  name: {{ template "partsunlimited-website.fullname" $ }}-monitor
+  name: {{ $.Release.Name }}-monitor
   namespace: {{ $.Values.service.monitoring.namespace }}
   labels:
     prometheus: kube-prometheus
