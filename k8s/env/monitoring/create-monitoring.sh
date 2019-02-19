@@ -35,5 +35,5 @@ kubectl create configmap --namespace $namespace custom-dashboards --from-file=cu
 
 # install kube-prometheus
 echo "Installing kube-prometheus with custom dashboards"
-helm upgrade --install kube-prometheus coreos/kube-prometheus --namespace $namespace --set serverDashboardConfigmaps[0]=custom-dashboards
+helm upgrade --install kube-prometheus coreos/kube-prometheus --namespace $namespace --set grafana.serverDashboardConfigmaps[0]=custom-dashboards
 
