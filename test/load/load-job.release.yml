@@ -59,7 +59,7 @@ metadata:
   name: load-cron-job
   namespace: __LoadNamespace__
 spec:
-  schedule: "0 * * ? * *" # every minute
+  schedule: "*/1 * * * *" # every minute
   jobTemplate:
     spec:
       template:
