@@ -66,11 +66,11 @@ spec:
             - name: URL
               value: __URL__
             - name: WEIGHTED_CATEGORY
-              value: '-1'
+              value: '0'
             - name: WEIGHTED_PERCENTAGE
               value: '0'
             command: ["wrk"]
-            args: ["-d$(TEST_TIME)", "-s", "random-category.lua", "$(URL)", "--", "$(WEIGHTED_CATEGORY)", "$(WEIGHTED_PERCENTAGE)"]
+            args: ["-c1", "-t1", "-d$(TEST_TIME)", "-s", "random-category.lua", "$(URL)", "--", "$(WEIGHTED_CATEGORY)", "$(WEIGHTED_PERCENTAGE)"]
             volumeMounts:
             - name: lua-script
               mountPath: /data
