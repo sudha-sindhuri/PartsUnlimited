@@ -21,7 +21,3 @@ fi
 # create config map
 echo "Create random-category-lua config map"
 kubectl create configmap -n $namespace random-category-lua --from-file=random-category.lua
-
-# create resource group
-echo "Create instant job"
-kubectl apply -f load-job.release.yml -n $namespace

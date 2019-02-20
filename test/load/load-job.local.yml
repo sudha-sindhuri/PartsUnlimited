@@ -2,7 +2,7 @@ apiVersion: batch/v1
 kind: Job
 metadata:
   name: load-job
-  namespace: pu-dev-load
+  namespace: pu-prod-load
 spec:
   ttlSecondsAfterFinished: 0 # delete right after the pod terminates
   template:
@@ -12,9 +12,9 @@ spec:
         image: williamyeh/wrk
         env:
         - name: TEST_TIME  # 2s or 5m etc.
-          value: '20s'
+          value: '2m'
         - name: URL
-          value: http://pu-dev-website-partsunlimited-website-blue.pu-dev.svc/site/ShoppingCart/AddToCart/
+          value: http://pu-prod-website-partsunlimited-website-blue.pu-prod.svc/site/ShoppingCart/AddToCart
         - name: WEIGHTED_CATEGORY
           value: '5' # Oil
         - name: WEIGHTED_PERCENTAGE

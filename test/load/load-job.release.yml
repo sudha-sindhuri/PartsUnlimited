@@ -4,7 +4,7 @@ metadata:
   name: load-job
   namespace: __LoadNamespace__
 spec:
-  ttlSecondsAfterFinished: 0 # delete right after the pod terminates
+  #ttlSecondsAfterFinished: 0 # delete right after the pod terminates
   template:
     spec:
       containers:
