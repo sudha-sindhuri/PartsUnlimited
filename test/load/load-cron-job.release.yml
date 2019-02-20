@@ -1,0 +1,33 @@
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: load-cron-job
+  namespace: __LoadNamespace__
+spec:
+  schedule: "*/1 * * * *" # every minute
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: wrk
+            image: williamyeh/wrk
+            env:
+            - name: TEST_TIME  # 2s or 5m etc.
+              value: '2s'
+            - name: URL
+              value: __LoadUrl__
+            - name: WEIGHTED_CATEGORY
+              value: '0'
+            - name: WEIGHTED_PERCENTAGE
+              value: '0'
+            command: ["wrk"]
+            args: ["-c1", "-t1", "-d$(TEST_TIME)", "-s", "random-category.lua", "$(URL)", "--", "$(WEIGHTED_CATEGORY)", "$(WEIGHTED_PERCENTAGE)"]
+            volumeMounts:
+            - name: lua-script
+              mountPath: /data
+          volumes:
+          - name: lua-script
+            configMap:
+              name: random-category-lua
+          restartPolicy: Never

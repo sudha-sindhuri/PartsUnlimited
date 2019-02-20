@@ -1,88 +1,31 @@
----
-apiVersion: v1
-kind: Namespace
+apiVersion: batch/v1
+kind: Job
 metadata:
-  name: __LoadNamespace__
----
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: random-category-lua
-  namespace: __LoadNamespace__
-data:
-  random-category.lua: |
-    products = { 
-        {1,2,3}, -- lighting
-        {4,5,6,7,8,9,10}, -- wheels and tires
-        {11,12}, -- brakes
-        {13,14,15}, -- batteries
-        {16,17,18}  -- oil
-    }
-    weightedCategory = 3
-    weightedPercentage = 75
-
-    function getRandomProduct()
-        local catId = weightedCategory
-        if weightedCategory == 0 or math.random() * 100 < weightedPercentage then catId = math.random(#products) end
-        local category = products[catId]
-        return category[math.random(#category)]
-    end
-
-    -- to pass args, use `-- arg1 arg2` at the end of the wrk command
-    -- e.g. wrk -t1 -c1 -d10 -R10 -s random-category.lua http://localhost:1337 -- arg1 arg2
-    -- 1st arg is weighted category (1-indexed) [or 0 for none]
-    -- 2nd arg is weighted percentage
-    function init(args) 
-        if #args == 2 then
-            weightedCategory = tonumber(args[1])
-            weightedPercentage = tonumber(args[2])
-        end
-        print("using " .. weightedCategory .. " as weighted category")
-        print("using " .. weightedPercentage .. " as weighted percentage")
-
-        -- Initialize the pseudo random number generator correctly
-        math.randomseed( os.time() )
-        math.random(); math.random(); math.random()
-    end
-
-    -- add a random product to the end of the request
-    request = function()
-        local path = wrk.path .. getRandomProduct(weightedCategory, weightedPercentage)
-        --print(path)
-        return wrk.format(wrk.method, path, wrk.headers, wrk.body)
-    end
-
----
-apiVersion: batch/v1beta1
-kind: CronJob
-metadata:
-  name: load-cron-job
+  name: load-job
   namespace: __LoadNamespace__
 spec:
-  schedule: "*/1 * * * *" # every minute
-  jobTemplate:
+  ttlSecondsAfterFinished: 0 # delete right after the pod terminates
+  template:
     spec:
-      template:
-        spec:
-          containers:
-          - name: wrk
-            image: williamyeh/wrk
-            env:
-            - name: TEST_TIME  # 2s or 5m etc.
-              value: '2s'
-            - name: URL
-              value: __LoadUrl__
-            - name: WEIGHTED_CATEGORY
-              value: '0'
-            - name: WEIGHTED_PERCENTAGE
-              value: '0'
-            command: ["wrk"]
-            args: ["-c1", "-t1", "-d$(TEST_TIME)", "-s", "random-category.lua", "$(URL)", "--", "$(WEIGHTED_CATEGORY)", "$(WEIGHTED_PERCENTAGE)"]
-            volumeMounts:
-            - name: lua-script
-              mountPath: /data
-          volumes:
-          - name: lua-script
-            configMap:
-              name: random-category-lua
-          restartPolicy: Never
+      containers:
+      - name: wrk
+        image: williamyeh/wrk
+        env:
+        - name: TEST_TIME  # 2s or 5m etc.
+          value: '20s'
+        - name: URL
+          value: __LoadUrl__
+        - name: WEIGHTED_CATEGORY
+          value: '5' # Oil
+        - name: WEIGHTED_PERCENTAGE
+          value: '95'
+        command: ["wrk"]
+        args: ["-d$(TEST_TIME)", "-s", "random-category.lua", "$(URL)", "--", "$(WEIGHTED_CATEGORY)", "$(WEIGHTED_PERCENTAGE)"]
+        volumeMounts:
+        - name: lua-script
+          mountPath: /data
+      volumes:
+      - name: lua-script
+        configMap:
+          name: random-category-lua
+      restartPolicy: Never
