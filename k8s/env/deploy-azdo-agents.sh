@@ -34,4 +34,6 @@ helm upgrade --install --kube-context $aksName \
   --set resources.limits.cpu=1 \
   --set resources.limits.memory=2Gi \
   --set resources.requests.cpu=.5 \
-  --set resources.requests.memory=1Gi
+  --set resources.requests.memory=1Gi \
+  --set image.repository=azure-pipelines/vsts-agent \
+  --set image.tag=ubuntu-16.04-docker-18.06.1-ce-standard
