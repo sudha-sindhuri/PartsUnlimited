@@ -18,7 +18,7 @@ else
     echo "ns $namespace already exists"
 fi
 
-# create resource group
+# add repo
 echo "Add prometheus operator helm repo"
 helm repo add coreos https://s3-eu-west-1.amazonaws.com/coreos-charts/stable/
 

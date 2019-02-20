@@ -14,7 +14,7 @@ spec:
         - name: TEST_TIME  # 2s or 5m etc.
           value: '20s'
         - name: URL
-          value: __LoadUrl__
+          value: __InstantLoadUrl__
         - name: WEIGHTED_CATEGORY
           value: '5' # Oil
         - name: WEIGHTED_PERCENTAGE
