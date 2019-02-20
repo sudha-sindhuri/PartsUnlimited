@@ -4,6 +4,7 @@
 rgName=$1
 aksName=$2
 namespace=$3  # set to load-env or similar
+cmName="random-category-lua"
 
 # get the k8s cluster creds and write them to a local kubeconfig file
 echo "Getting credentials for cluster $askName"
@@ -19,5 +20,11 @@ else
 fi
 
 # create config map
-echo "Create random-category-lua config map"
-kubectl create configmap -n $namespace random-category-lua --from-file=random-category.lua
+cmExists=$(kubectl get cm -n $namespace | grep $cmName -w)
+if [ "$cmExists" = "" ]; then
+    echo "Creating cm $cmName"
+    kubectl create configmap -n $namespace $cmName --from-file=random-category.lua
+else
+    echo "Replacing cm $cmName"
+    kubectl create configmap -n $namespace $cmName --from-file=random-category.lua --dry-run -o yaml | kubectl replace -f -
+fi
