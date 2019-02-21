@@ -6,35 +6,33 @@ canaries:
   - name: blue
     replicaCount: 1
     weight: 80
-    tag: 1.0.0.10
+    tag: 1.0.0.16
   - name: green
     replicaCount: 2
     weight: 20
-    tag: 1.0.0.9
+    tag: 1.0.0.16
 
 system:
   name: PartsUnlimited
-  ingressProxyUrl: http://traefik-internal.pu.svc
+  environment: Development
+  ingressProxyUrl: http://pu-dev-traefik-internal.pu-dev.svc
   discountsBaseAddress: http://pu-api.local
 
 image:
-  repository: partsunlimitedwebsite
+  repository: cdk8spu.azurecr.io/partsunlimited-website
   pullPolicy: IfNotPresent
-  pullSecretName: "foo"  # enter a value if you need a pull secret for your registry
+  pullSecretName: "cdk8spu"  # enter a value if you need a pull secret for your registry
 
 service:
   type: ClusterIP
   port: 80
-  monitoring:
-    enabled: true
-    namespace: monitoring
 
 ingress:
   enabled: true
   path: /site
   hosts:
     - pu-web.local
-  class: traefik-external
+  class: pu-dev-traefik-external
 
 resources: {}
   # We usually recommend not to specify default resources and to leave this as a conscious

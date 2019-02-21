@@ -7,7 +7,7 @@ aksName=$3
 nodeCount=$4
 spnAppId=$5
 spnSecret=$6
-kubeVersion="1.11.5"
+kubeVersion="1.12.5"
 
 # assumes you're logged in already - if running in AzDO, use Azure CLI task with endpoint
 

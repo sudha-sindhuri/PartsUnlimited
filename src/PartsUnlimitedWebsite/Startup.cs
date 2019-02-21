@@ -2,10 +2,12 @@
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using PartsUnlimited.Areas.Admin;
 using PartsUnlimited.Models;
 using PartsUnlimited.Queries;
@@ -13,9 +15,14 @@ using PartsUnlimited.Recommendations;
 using PartsUnlimited.Search;
 using PartsUnlimited.Security;
 using PartsUnlimited.Telemetry;
+using PartsUnlimited.Telemetry.Providers;
 using PartsUnlimited.WebsiteConfiguration;
 using PartsUnlimitedWebsite.Services;
+using PartsUnlimitedWebsite.Telemetry.Providers;
+using Prometheus;
 using System;
+using System.IO;
+using System.Reflection;
 
 namespace PartsUnlimited
 {
@@ -23,10 +30,14 @@ namespace PartsUnlimited
     {
         public IConfiguration Configuration { get; }
         public IServiceCollection service { get; private set; }
+		
+		public ILoggerFactory LoggerFactory { get; private set; }
 
-        public Startup(IConfiguration configuration)
+
+		public Startup(IConfiguration configuration, ILoggerFactory loggerFactory)
         {
             Configuration = configuration;
+			LoggerFactory = loggerFactory;
         }
 
         public void ConfigureServices(IServiceCollection services)
@@ -68,7 +79,15 @@ namespace PartsUnlimited
             services.AddScoped<IOrdersQuery, OrdersQuery>();
             services.AddScoped<IRaincheckQuery, RaincheckQuery>();
 
-            services.AddSingleton<ITelemetryProvider, EmptyTelemetryProvider>();
+            services.AddSingleton<ITelemetryProvider, PrometheusTelemetryProvider>(p =>
+			{
+				var logger = LoggerFactory.CreateLogger<PrometheusTelemetryProvider>();
+				var version = Assembly.GetEntryAssembly().GetCustomAttribute<AssemblyFileVersionAttribute>()
+					.Version.ToString();
+				var env = Configuration["ASPNETCORE_ENVIRONMENT"];
+				var canary = Configuration["CANARY"];
+				return new PrometheusTelemetryProvider(version, env, canary, logger);
+			});
             services.AddScoped<IProductSearch, StringContainsProductSearch>();
 
             SetupRecommendationService(services);
@@ -76,7 +95,6 @@ namespace PartsUnlimited
             services.AddScoped<IWebsiteOptions>(p =>
             {
                 var telemetry = p.GetRequiredService<ITelemetryProvider>();
-
                 return new ConfigurationWebsiteOptions(Configuration.GetSection("WebsiteOptions"), telemetry);
             });
 
@@ -163,11 +181,18 @@ namespace PartsUnlimited
 
         public void Configure(IApplicationBuilder app)
         {
+            var basePath = Configuration["PathBase"] ?? "/";
+
             // Configure Session.
             app.UseSession();
 
+			// prometheus
+			var version = Assembly.GetEntryAssembly().GetCustomAttribute<AssemblyFileVersionAttribute>()
+					.Version.ToString();
+			app.UseMethodTracking(version, Configuration["ASPNETCORE_ENVIRONMENT"], Configuration["CANARY"]);
+			app.UseMetricServer($"{basePath}/metrics");
+
             // use for reverse proxy path-based routing
-            var basePath = Configuration["PathBase"] ?? "/";
             app.UsePathBase(basePath);
 
             // Add static files to the request pipeline

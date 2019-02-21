@@ -71,12 +71,13 @@ namespace PartsUnlimited.Controllers
 
         public async Task<IActionResult> AddToCart(int id)
         {
-            // Retrieve the product from the database
-            var addedProduct = _db.Products
-                .Single(product => product.ProductId == id);
+			// Retrieve the product from the database
+			var addedProduct = _db.Products
+				.Include(product => product.Category)
+				.Single(product => product.ProductId == id);
 
-            // Start timer for save process telemetry
-            var startTime = System.DateTime.Now;
+			// Start timer for save process telemetry
+			var startTime = System.DateTime.Now;
 
             // Add it to the shopping cart
             var cart = ShoppingCart.GetCart(_db, HttpContext);
@@ -85,12 +86,18 @@ namespace PartsUnlimited.Controllers
 
             await _db.SaveChangesAsync(HttpContext.RequestAborted);
 
-            // Trace add process
-            var measurements = new Dictionary<string, double>()
-            {
-                {"ElapsedMilliseconds", System.DateTime.Now.Subtract(startTime).TotalMilliseconds }
-            };
-            _telemetry.TrackEvent("Cart/Server/Add", null, measurements);
+			// Trace add process
+			var measurements = new Dictionary<string, double>()
+			{
+				{"ElapsedMilliseconds", System.DateTime.Now.Subtract(startTime).TotalMilliseconds },
+				{"Price", (double)addedProduct.Price }
+			};
+			var properties = new Dictionary<string, string>()
+			{
+				{ "ProductCategory", addedProduct.Category.Name },
+				{ "Product", addedProduct.Title }
+			};
+			_telemetry.TrackEvent("Cart/Server/Add", properties, measurements);
 
             // Go back to the main store page for more shopping
             return RedirectToAction("Index");

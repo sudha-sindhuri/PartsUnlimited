@@ -47,6 +47,8 @@ spec:
             valueFrom:
               fieldRef:
                 fieldPath: metadata.labels['canary']
+          - name: ASPNETCORE_ENVIRONMENT
+            value: {{ $.Values.system.environment }}
           - name: INGRESS_PROXY_URL
             value: {{ $.Values.system.ingressProxyUrl }}
           - name: PathBase

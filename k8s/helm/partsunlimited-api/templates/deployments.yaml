@@ -45,6 +45,8 @@ spec:
             valueFrom:
               fieldRef:
                 fieldPath: metadata.labels['canary']
+          - name: ASPNETCORE_ENVIRONMENT
+            value: {{ $.Values.system.environment }}
           livenessProbe:
             httpGet:
               path: /health
