@@ -18,7 +18,7 @@ spec:
         - name: WEIGHTED_CATEGORY
           value: '5' # Oil
         - name: WEIGHTED_PERCENTAGE
-          value: '80'
+          value: '50'
         command: ["wrk"]
         args: ["-d$(TEST_TIME)", "-s", "random-category.lua", "$(URL)", "--", "$(WEIGHTED_CATEGORY)", "$(WEIGHTED_PERCENTAGE)"]
         volumeMounts:
