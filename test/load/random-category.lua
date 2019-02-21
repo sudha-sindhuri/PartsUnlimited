@@ -43,7 +43,7 @@ end
 -- add a random product to the end of the request
 request = function()
     local path = wrk.path .. getRandomProduct(weightedCategory, weightedPercentage)
-    print(path)
+    --print(path)
     return wrk.format(wrk.method, path, wrk.headers, wrk.body)
 end
 
