@@ -17,6 +17,7 @@ system:
   environment: Development
   ingressProxyUrl: http://pu-dev-traefik-internal.pu-dev.svc
   discountsBaseAddress: http://pu-api.local
+  defaultConnectionStringSecretName: pu-sql-mssql-linux-secret
 
 image:
   repository: cdk8spu.azurecr.io/partsunlimited-website
