@@ -27,4 +27,5 @@ if [ "$exists" = "" ]; then
     kubectl create secret generic $secretName --from-literal=connectionstring="$constr" -n $namespace
 else
     echo "Secret $secretName already exists"
+    kubectl create secret generic $secretName --from-literal=connectionstring="$constr" -n $namespace --dry-run -o yaml | kubectl replace -f -
 fi
