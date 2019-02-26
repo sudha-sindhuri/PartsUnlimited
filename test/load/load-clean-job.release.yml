@@ -1,0 +1,52 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: clean-sql
+data:
+  clean.sql: |
+    DECLARE @itemCount INT;
+    SELECT @itemCount = COUNT(CartItemId) FROM CartItems
+    PRINT "Found " + CAST(@itemCount as NVARCHAR) + " CartItems"
+    IF 1000 < @itemCount
+      BEGIN
+        PRINT "deleting CartItems (> 1000)"
+        DELETE FROM CartItems;
+      END
+
+---
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: clean-cron-job
+spec:
+  schedule: "*/10 * * * *" # every 10 minutes
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: mssql-tools
+            image: microsoft/mssql-tools
+            env:
+            - name: PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: __SQLPasswordSecretName__
+                  key: sapassword
+            - name: SERVER
+              value: __Namespace__-sql-mssql-linux.__Namespace__.svc
+            - name: USER
+              value: sa
+            - name: DATABASE
+              value: PartsUnlimited
+            command: ["/opt/mssql-tools/bin/sqlcmd"]
+            args: ["-S", "$(SERVER)", "-U", "$(USER)", "-P", "$(PASSWORD)", "-d", "$(DATABASE)", "-i", "/cdata/clean.sql"]
+            volumeMounts:
+            - name: clean-sql
+              mountPath: /cdata
+          volumes:
+          - name: clean-sql
+            configMap:
+              name: clean-sql
+          restartPolicy: Never
