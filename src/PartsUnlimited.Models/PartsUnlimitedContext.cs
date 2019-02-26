@@ -42,7 +42,8 @@ namespace PartsUnlimited.Models
             if (!string.IsNullOrWhiteSpace(_connectionString))
             {
                 optionsBuilder.UseSqlServer(_connectionString);
-            }else
+            }
+			else
             {
                 System.Data.SqlClient.SqlConnectionStringBuilder builder = new System.Data.SqlClient.SqlConnectionStringBuilder(_connectionString);
                 optionsBuilder.UseInMemoryDatabase("Test");
