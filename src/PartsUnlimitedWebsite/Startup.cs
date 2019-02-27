@@ -21,6 +21,7 @@ using PartsUnlimitedWebsite.Services;
 using PartsUnlimitedWebsite.Telemetry.Providers;
 using Prometheus;
 using System;
+using System.Diagnostics;
 using System.IO;
 using System.Reflection;
 
@@ -52,9 +53,10 @@ namespace PartsUnlimited
             {
                 sqlConnectionString = "";
             }
+			Trace.WriteLine($"Using SQL con string {sqlConnectionString}");
 
-            // Add EF services to the services container
-            services.AddDbContext<PartsUnlimitedContext>();
+			// Add EF services to the services container
+			services.AddDbContext<PartsUnlimitedContext>(); // c => new PartsUnlimitedContext(sqlConnectionString));
 
 
             // Add Identity services to the services container

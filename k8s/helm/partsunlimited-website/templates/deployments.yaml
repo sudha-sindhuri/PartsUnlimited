@@ -43,6 +43,13 @@ spec:
           env:
           - name: SERVICES__DISCOUNTS__BASEADDRESS  # use __ instead of : for k8s
             value: {{ $.Values.system.discountsBaseAddress }}
+          {{- if $.Values.system.defaultConnectionStringSecretName }}
+          - name: ConnectionStrings__DefaultConnectionString  # use __ instead of : for k8s
+            valueFrom:
+              secretKeyRef:
+                name: {{ $.Values.system.defaultConnectionStringSecretName }}
+                key: {{ default "connectionstring" $.Values.system.defaultConnectionStringSecretKey }}
+          {{- end }}
           - name: CANARY
             valueFrom:
               fieldRef:

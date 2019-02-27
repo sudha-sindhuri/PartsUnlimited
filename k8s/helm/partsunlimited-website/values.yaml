@@ -16,6 +16,8 @@ system:
   name: PartsUnlimited
   ingressProxyUrl: http://traefik-internal.pu.svc
   discountsBaseAddress: http://pu-api.local
+  # defaultConnectionStringSecretName: pu-sql-mssql-linux-secret
+  # defaultConnectionStringSecretKey: connectionstring
 
 image:
   repository: partsunlimitedwebsite

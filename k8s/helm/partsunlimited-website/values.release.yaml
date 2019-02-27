@@ -17,6 +17,7 @@ system:
   environment: __Environment__
   ingressProxyUrl: __IngressProxyUrl__
   discountsBaseAddress: __DiscountsBaseAddress__
+  defaultConnectionStringSecretName: __DefaultConnectionStringSecretName__
 
 image:
   repository: __Repository__
