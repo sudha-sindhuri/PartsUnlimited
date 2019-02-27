@@ -14,6 +14,11 @@ metadata:
     canary: {{ .name }}
 spec:
   replicas: {{ .replicaCount }}
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 0
+  minReadySeconds: 3
   selector:
     matchLabels:
       app: {{ template "partsunlimited-website.name" $ }}

@@ -7,10 +7,13 @@ canaries:
     replicaCount: 1
     weight: 20
     tag: __BlueTag__
+    serviceAnnotations: 
+      traefik.backend.circuitbreaker: "NetworkErrorRatio() > 0.2"
   - name: green
     replicaCount: __GreenReplicas__
     weight: 80
     tag: __GreenTag__
+    serviceAnnotations: {}
 
 system:
   name: PartsUnlimited

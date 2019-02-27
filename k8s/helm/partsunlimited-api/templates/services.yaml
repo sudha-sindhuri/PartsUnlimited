@@ -12,6 +12,8 @@ metadata:
     heritage: {{ $.Release.Service }}
     system: {{ $.Values.system.name }}
     canary: {{ .name }}
+  annotations:
+{{ toYaml .serviceAnnotations | indent 4 }}
 spec:
   type: {{ $.Values.service.type }}
   ports:
