@@ -8,6 +8,7 @@ trigger:
 
 pool:
   name: 'k8s-pu-agents' # private
+  # use this for hosted
   # vmImage: 'Ubuntu-16.04' # hosted
 
 variables:
