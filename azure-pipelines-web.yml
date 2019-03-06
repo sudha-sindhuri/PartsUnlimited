@@ -7,7 +7,8 @@ trigger:
     - k8s/helm/partsunlimited-website
 
 pool:
-  vmImage: 'Ubuntu-16.04'
+  name: ks8-pu-agents # private pool
+  # vmImage: 'Ubuntu-16.04'
 
 variables:
   azureSubEndpoint: '10M Client Demo'
