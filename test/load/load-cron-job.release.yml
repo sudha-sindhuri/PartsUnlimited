@@ -5,6 +5,7 @@ metadata:
   namespace: __LoadNamespace__
 spec:
   schedule: "*/1 * * * *" # every minute
+  concurrencyPolicy: Forbid
   jobTemplate:
     spec:
       template:

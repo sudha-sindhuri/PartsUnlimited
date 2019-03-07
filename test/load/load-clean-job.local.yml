@@ -21,6 +21,7 @@ metadata:
   name: clean-cron-job
 spec:
   schedule: "*/10 * * * *" # every 10 minutes
+  concurrencyPolicy: Forbid
   jobTemplate:
     spec:
       template:

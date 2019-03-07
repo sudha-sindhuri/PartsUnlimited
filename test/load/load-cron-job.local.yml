@@ -4,6 +4,7 @@ metadata:
   name: load-cron-job
 spec:
   schedule: "*/1 * * * *" # every minute
+  concurrencyPolicy: Forbid
   jobTemplate:
     spec:
       template:

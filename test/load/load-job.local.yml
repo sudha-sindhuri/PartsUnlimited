@@ -5,6 +5,7 @@ metadata:
   namespace: pu-prod-load
 spec:
   ttlSecondsAfterFinished: 120 # delete right after the pod terminates
+  concurrencyPolicy: Forbid
   template:
     spec:
       containers:
