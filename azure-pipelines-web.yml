@@ -14,6 +14,7 @@ variables:
   azureSubEndpoint: '10M Client Demo'
   acrName: 'cdk8spu.azurecr.io'
   imageRepoName: 'partsunlimited-website'
+  SQ_HOST: 'sonarqube-sonarqube.sonarqube.svc'
 
 steps:
 # - script: docker build -f Dockerfile -t $(imageName) .
@@ -27,7 +28,7 @@ steps:
     azureSubscriptionEndpoint: '$(azureSubEndpoint)'
     azureContainerRegistry: '$(acrName)'
     imageName: '$(imageRepoName):$(Build.BuildNumber)'
-    arguments: '--build-arg version=$(Build.BuildNumber)'
+    arguments: '--build-arg version=$(Build.BuildNumber) --build-arg SQ_HOST=$(SQ_HOST)'
   continueOnError: true # to make sure we get the test results even when the tests fail
 
 - script: |
