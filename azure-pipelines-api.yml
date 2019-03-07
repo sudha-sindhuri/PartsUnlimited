@@ -8,9 +8,9 @@ trigger:
 
 pool:
   # use this for private
-  #name: 'k8s-pu-agents'
+  name: 'k8s-pu-agents'
   # use this for hosted
-  vmImage: 'Ubuntu-16.04' # hosted
+  #vmImage: 'Ubuntu-16.04' # hosted
 
 variables:
   azureSubEndpoint: '10M Client Demo'
