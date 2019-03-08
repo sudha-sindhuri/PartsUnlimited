@@ -44,7 +44,7 @@ RUN dotnet test ./test/PartsUnlimited.UnitTests/PartsUnlimited.UnitTests.csproj 
     --results-directory /sqresults \
     --logger "trx;LogFileName=sqresults.xml" \
     /p:CollectCoverage=true /p:CoverletOutputFormat=opencover /p:CoverletOutput=/sqresults/opencover.xml \
-    /p:Exclude="[xunit.*]*%2c[StackExchange.*]*"
+    /p:Exclude="[xunit.*]*%2c[System.*]%2c[Microsoft.*]*%2c[StackExchange.*]*"
 
 # install SQ scanner
 RUN dotnet tool install dotnet-sonarscanner --global
@@ -52,7 +52,7 @@ ENV PATH="${PATH}:/root/.dotnet/tools"
 RUN dotnet build-server shutdown
 # analyze using SQ
 RUN dotnet sonarscanner begin /k:${SQ_PROJECT_KEY} /v:${SQ_PROJECT_VERSION} \
-    /d:sonar.host.url=http://${SQ_HOST}:${SQ_PORT} \ 
+    /d:sonar.host.url="http://${SQ_HOST}:${SQ_PORT}" \ 
 	/d:sonar.cs.vstest.reportsPaths="/sqresults/sqresults.xml" \ 
 	/d:sonar.cs.opencover.reportsPaths="/sqresults/opencover.xml" \ 
 	/d:sonar.scm.disabled=true /d:sonar.coverage.dtdVerification=true \ 
