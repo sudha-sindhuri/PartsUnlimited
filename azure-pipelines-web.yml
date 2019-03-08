@@ -14,12 +14,18 @@ variables:
   azureSubEndpoint: '10M Client Demo'
   acrName: 'cdk8spu.azurecr.io'
   imageRepoName: 'partsunlimited-website'
-  SQ_HOST: 'sonarqube-sonarqube.sonarqube.svc'
+  SQ_SVC_NAME: 'sonarqube-sonarqube'
+  SQ_NAMESPACE: 'sonarqube'
 
 steps:
 # - script: docker build -f Dockerfile -t $(imageName) .
 #   displayName: 'docker build'
 #   continueOnError: true
+
+# get the clusterIP of sonarqube
+- script: |
+    export ip=(kubectl get svc $(SQ_SVC_NAME) -n $(SQ_NAMESPACE) -o=jsonpath="{.spec.clusterIP}")
+    echo '##vso[task.setvariable variable=SQ_SVC_IP]$ip'
 
 - task: Docker@1
   displayName: 'Build the image'
@@ -28,7 +34,7 @@ steps:
     azureSubscriptionEndpoint: '$(azureSubEndpoint)'
     azureContainerRegistry: '$(acrName)'
     imageName: '$(imageRepoName):$(Build.BuildNumber)'
-    arguments: '--build-arg version=$(Build.BuildNumber) --build-arg SQ_HOST=$(SQ_HOST)'
+    arguments: '--build-arg version=$(Build.BuildNumber) --build-arg SQ_HOST=sqhost --add-host "sqhost:$(SQ_SVC_IP)"'
   continueOnError: true # to make sure we get the test results even when the tests fail
 
 - script: |
