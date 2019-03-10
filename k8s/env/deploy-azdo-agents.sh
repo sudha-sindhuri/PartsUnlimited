@@ -38,4 +38,4 @@ helm upgrade --install --kube-context $aksName \
   --set image.tag=ubuntu-16.04-docker-18.06.1-ce-standard
 
 echo "Creating clusterrolebinding for default svcaccount"
-kubectl create clusterrolebinding default-view --clusterrole=view --serviceaccount=azdo-agents:default
+kubectl apply -f azdo-agents-rbac.yml
