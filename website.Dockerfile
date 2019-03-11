@@ -9,6 +9,8 @@ ARG SQ_PORT=9000
 # ----
 # install npm for building
 RUN curl -sL https://deb.nodesource.com/setup_8.x | bash - && apt-get update && apt-get install -yq nodejs build-essential make
+# install jdk for sonarqube
+RUN RUN apt-get update && apt-get install -y openjdk-8-jre-headless
 
 # ----
 # Copy csproj and restore as distinct layers
