@@ -58,7 +58,7 @@ RUN dotnet sonarscanner begin /k:${SQ_PROJECT_KEY} /v:${SQ_PROJECT_VERSION} \
 	/d:sonar.cs.vstest.reportsPaths="/sqresults/sqresults.xml" \ 
 	/d:sonar.cs.opencover.reportsPaths="/sqresults/opencover.xml" \ 
 	/d:sonar.scm.disabled=true /d:sonar.coverage.dtdVerification=true \ 
-	/d:sonar.coverage.exclusions="*Tests*.cs,*testresult*.xml,*opencover*.xml" \ 
+	/d:sonar.coverage.exclusions="*Tests*.cs,*testresult*.xml,*opencover*.xml,wwwroot/**/*,Scripts/**/*,Migrations/**/*" \ 
 	/d:sonar.test.exclusions="*Tests*.cs,*testresult*.xml,*opencover*.xml,wwwroot/**/*,Scripts/**/*,Migrations/**/*"
 RUN dotnet build -c Release -o out /p:Version=${version} --no-restore 
 RUN dotnet sonarscanner end
