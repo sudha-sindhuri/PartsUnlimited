@@ -23,7 +23,7 @@ steps:
 #   continueOnError: true
 
 - task: Docker@1
-  displayName: 'Build the image'
+  displayName: 'Build the image including tests'
   inputs:
     dockerfile: 'api.Dockerfile'
     azureSubscriptionEndpoint: '$(azureSubEndpoint)'
