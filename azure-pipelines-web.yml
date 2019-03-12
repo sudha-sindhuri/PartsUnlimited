@@ -7,7 +7,7 @@ trigger:
     - k8s/helm/partsunlimited-website
 
 pool:
-  name: "ks8-pu-agents" # private pool
+  name: "k8s-pu-agents" # private pool
   # vmImage: 'Ubuntu-16.04'
 
 variables:
