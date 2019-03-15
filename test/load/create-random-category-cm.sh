@@ -7,7 +7,7 @@ namespace=$3  # set to load-env or similar
 cmName="random-category-lua"
 
 # get the k8s cluster creds and write them to a local kubeconfig file
-echo "Getting credentials for cluster $askName"
+echo "Getting credentials for cluster $aksName"
 az aks get-credentials -n $aksName -g $rgName
 
 # create namespace
