@@ -5,13 +5,13 @@
 canaries:
   - name: blue
     replicaCount: 1
-    weight: 80
+    weight: 20
     tag: 1.0.0.10
     annotations:
       traefik.backend.circuitbreaker: "NetworkErrorRatio() > 0.2"
   - name: green
     replicaCount: 2
-    weight: 20
+    weight: 80
     tag: 1.0.0.9
     annotations: {}
 
